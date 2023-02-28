@@ -14,7 +14,7 @@ using System.IO;                                                                
                                                                                                                    
 namespace Tcp_Server
 {
-    public partial class Form1 : Form
+    public partial class Server : Form
     {
         int Start_Time = 3;
 
@@ -43,7 +43,7 @@ namespace Tcp_Server
         int pic_i;                                                                                                  // 움직이는 이미지 제어
 
 
-        public Form1()
+        public Server()
         {
             InitializeComponent();
 
@@ -286,7 +286,6 @@ namespace Tcp_Server
             tcpListener = new TcpListener(IPAddress.Parse(TextBox_IPadress.Text), int.Parse(TextBox_IPport.Text));  // 서버 객체 생성 및 IP주소와 Port번호를 할당
             tcpListener.Start();                                                                                    // 서버 리스너 시작
 
-
             while (threadST)
             {
                 try
@@ -311,10 +310,7 @@ namespace Tcp_Server
                 }
                 catch (IOException)
                 {
-                    ChangePicture(PictureBox_ClientState, image[7]);
-                    PictureBox_ClientState.BackColor = Color.DarkRed;
-                    ChangeText(Label_ClientState, "Disconnected");
-                    connecting = false;
+                    ServerClosed();
 
                     MethodInvoker methodInvokerDelegate = delegate ()
                     { MessageBoxEx.Show(this, "클라이언트와의 연결이 끊겼습니다.", "연결"); };
@@ -327,10 +323,7 @@ namespace Tcp_Server
                 }
                 catch (FormatException)
                 {
-                    ChangePicture(PictureBox_ClientState, image[7]);
-                    PictureBox_ClientState.BackColor = Color.DarkRed;
-                    ChangeText(Label_ClientState, "Disconnected");
-                    connecting = false;
+                    ServerClosed();
 
                     MethodInvoker methodInvokerDelegate = delegate ()
                     { MessageBoxEx.Show(this, "FormatException", "오류"); };
@@ -342,12 +335,17 @@ namespace Tcp_Server
                 }
                 catch (SocketException)
                 {
-                    ChangePicture(PictureBox_ClientState, image[7]);
-                    PictureBox_ClientState.BackColor = Color.DarkRed;
-                    ChangeText(Label_ClientState, "Disconnected");
-                    connecting = false;
+                    ServerClosed();
                 }
             }
+        }
+
+        private void ServerClosed()
+        {
+            ChangePicture(PictureBox_ClientState, image[7]);
+            PictureBox_ClientState.BackColor = Color.DarkRed;
+            ChangeText(Label_ClientState, "Disconnected");
+            connecting = false;
         }
 
 
