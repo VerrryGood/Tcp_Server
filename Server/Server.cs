@@ -380,22 +380,24 @@ namespace Tcp_Server
                     break;
             }
 
-            sendMsg = $"[{clientNo + 1}번 클라이언트 접속]";
-            WriteMsg(sendMsg);
+            while (string.IsNullOrEmpty(connClient.NickName)) { Thread.Sleep(100); }
+
+            sendMsg = $"0,새로운 사용자 접속 ({connClient.NickName})";
+            WriteMsg($"[{clientNo + 1}번 사용자 접속 (닉네임 : {connClient.NickName})]");
 
             foreach (var pair in clientList)
             {
                 if (pair.Key == clientNo)
                     continue;
 
-                pair.Value.SendMsg($"0,새로운 사용자 접속 ({clientNo + 1}번)");
+                pair.Value.SendMsg(sendMsg);
             }
         }
 
         public void CloseConnection(int clientNo)
         {
-            sendMsg = $"[{clientNo + 1}번 사용자 연결 종료]";
-            WriteMsg(sendMsg);
+            sendMsg = $"0,{clientList[clientNo].NickName} 접속 종료";
+            WriteMsg($"[{clientNo + 1}번 사용자 ({clientList[clientNo].NickName}) 접속 종료");
 
             foreach (var pair in clientList)
             {
@@ -430,14 +432,29 @@ namespace Tcp_Server
 
         public void MessageReceived(int clientNo, string msg)
         {
-            WriteMsg($"[{clientNo + 1}번에게 받음 : {msg}]");
+            sendMsg = $"{clientList[clientNo].NickName},{msg}";
+            WriteMsg($"[{clientNo + 1}번 {clientList[clientNo].NickName} : {msg}]");
 
             foreach (var pair in clientList)
             {
                 if (pair.Key == clientNo)
                     continue;
 
-                pair.Value.SendMsg($"{clientNo + 1},{msg}");
+                pair.Value.SendMsg(sendMsg);
+            }
+        }
+
+        public void NickNameChanged(string preNickName, string curNickName, int clientNo)
+        {
+            sendMsg = $"0,{preNickName} 닉네임 변경 -> {curNickName}";
+            WriteMsg($"[{clientNo + 1}번 사용자 닉네임 변경 ({preNickName} -> {curNickName})");
+
+            foreach (var pair in clientList)
+            {
+                if (pair.Key == clientNo)
+                    continue;
+
+                pair.Value.SendMsg(sendMsg);
             }
         }
 

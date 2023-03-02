@@ -29,6 +29,7 @@ namespace Tcp_Client
 
         private const string fullMsg = "/ServerFull";
         private const string closeMsg = "/CloseServer";
+        private const string nickNameSignal = "/NickName";
 
         private Thread receiveThread;
         private byte[] rcvPacket = new byte[1024];
@@ -36,6 +37,8 @@ namespace Tcp_Client
         private string rcvMsg;
         private string[] messages;
         private StringBuilder msgBuilder;
+
+        private string nickName = "익명";
 
         public Client()
         {
@@ -111,6 +114,8 @@ namespace Tcp_Client
                 };
                 receiveThread.Start();
 
+                SendBuf($"{nickNameSignal} {nickName}");
+
                 TextPrint("[연결이 시작되었습니다.]");
             }
         }
@@ -142,7 +147,7 @@ namespace Tcp_Client
                             else
                             {
                                 msgBuilder.Append(messages[0]);
-                                msgBuilder.Append("번 사용자 : ");
+                                msgBuilder.Append(" : ");
                             }
 
                             if (messages.Length > 2)
@@ -161,13 +166,6 @@ namespace Tcp_Client
                 catch { CloseConnection(); }
             }
         }
-
-
-
-
-
-
-
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -258,18 +256,25 @@ namespace Tcp_Client
             {
                 string sendMsg = TextBox_SendText.Text;                         // TextBox_SendText 텍스트 박스에 있는 string을
 
-                switch (sendMsg)
+                if (sendMsg.StartsWith(nickNameSignal))
                 {
-                    case closeMsg:
-                        TextPrint("[/CloseServer 명령어 입력]");
-                        SendBuf(closeMsg);
-                        CloseConnection();
-                        break;
-                    default:
-                        TextPrint(sendMsg);
-                        SendBuf(sendMsg);
-                        break;
+                    nickName = sendMsg.Substring(nickNameSignal.Length, sendMsg.Length - nickNameSignal.Length).Trim();
+                    TextPrint($"[닉네임 변경 -> {nickName}]");
+                    SendBuf(sendMsg);
                 }
+                else
+                    switch (sendMsg)
+                    {
+                        case closeMsg:
+                            TextPrint("[/CloseServer 명령어 입력]");
+                            SendBuf(closeMsg);
+                            CloseConnection();
+                            break;
+                        default:
+                            TextPrint(sendMsg);
+                            SendBuf(sendMsg);
+                            break;
+                    }
 
                 TextBox_SendText.Clear();
             }
@@ -352,5 +357,31 @@ namespace Tcp_Client
             this.TextBox_SendText.Focus();
         }
 
+        private void nickNameSet_Click(object sender, EventArgs e)
+        {
+            if (CheckNickName(nickNameBox.Text))
+            {
+                nickName = nickNameBox.Text;
+                nickNamePanel.Visible = false;
+                TextPrint($"[닉네임 설정 : {nickName}]");
+            }
+        }
+
+        private bool CheckNickName(string nickName)
+        {
+            if (nickName.Contains(" "))
+            {
+                MessageBox.Show("닉네임에는 공백이 포함될 수 없습니다", "오류");
+                return false;
+            }
+
+            if (nickName.Length > 14)
+            {
+                MessageBox.Show("닉네임은 14글자 이하로 입력하여주십시오", "오류");
+                return false;
+            }
+
+            return true;
+        }
     }
 }

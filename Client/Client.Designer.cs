@@ -36,8 +36,13 @@ namespace Tcp_Client
             this.TextBox_SendText = new System.Windows.Forms.TextBox();
             this.PictureBox_Connect = new System.Windows.Forms.PictureBox();
             this.Button_Close = new System.Windows.Forms.PictureBox();
+            this.nickNamePanel = new System.Windows.Forms.TableLayoutPanel();
+            this.inputLabel = new System.Windows.Forms.Label();
+            this.nickNameBox = new System.Windows.Forms.TextBox();
+            this.nickNameSet = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_Connect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Button_Close)).BeginInit();
+            this.nickNamePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Timer_ConnectICO
@@ -101,24 +106,83 @@ namespace Tcp_Client
             this.Button_Close.TabStop = false;
             this.Button_Close.Click += new System.EventHandler(this.Button_Close_Click);
             // 
-            // Form2
+            // nickNamePanel
+            // 
+            this.nickNamePanel.ColumnCount = 3;
+            this.nickNamePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.nickNamePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.nickNamePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.nickNamePanel.Controls.Add(this.inputLabel, 0, 1);
+            this.nickNamePanel.Controls.Add(this.nickNameBox, 1, 3);
+            this.nickNamePanel.Controls.Add(this.nickNameSet, 1, 5);
+            this.nickNamePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.nickNamePanel.Location = new System.Drawing.Point(0, 40);
+            this.nickNamePanel.Name = "nickNamePanel";
+            this.nickNamePanel.RowCount = 7;
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.nickNamePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
+            this.nickNamePanel.Size = new System.Drawing.Size(324, 426);
+            this.nickNamePanel.TabIndex = 5;
+            // 
+            // inputLabel
+            // 
+            this.inputLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.inputLabel.AutoSize = true;
+            this.nickNamePanel.SetColumnSpan(this.inputLabel, 3);
+            this.inputLabel.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.inputLabel.ForeColor = System.Drawing.Color.White;
+            this.inputLabel.Location = new System.Drawing.Point(46, 148);
+            this.inputLabel.Name = "inputLabel";
+            this.inputLabel.Size = new System.Drawing.Size(231, 17);
+            this.inputLabel.TabIndex = 0;
+            this.inputLabel.Text = "사용하실 닉네임을 입력하여 주십시오";
+            // 
+            // nickNameBox
+            // 
+            this.nickNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.nickNameBox.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.nickNameBox.Location = new System.Drawing.Point(75, 182);
+            this.nickNameBox.Name = "nickNameBox";
+            this.nickNameBox.Size = new System.Drawing.Size(174, 29);
+            this.nickNameBox.TabIndex = 1;
+            // 
+            // nickNameSet
+            // 
+            this.nickNameSet.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.nickNameSet.Location = new System.Drawing.Point(118, 222);
+            this.nickNameSet.Name = "nickNameSet";
+            this.nickNameSet.Size = new System.Drawing.Size(87, 28);
+            this.nickNameSet.TabIndex = 2;
+            this.nickNameSet.Text = "확인";
+            this.nickNameSet.UseVisualStyleBackColor = true;
+            this.nickNameSet.Click += new System.EventHandler(this.nickNameSet_Click);
+            // 
+            // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(324, 466);
+            this.Controls.Add(this.nickNamePanel);
             this.Controls.Add(this.Button_Close);
             this.Controls.Add(this.TextBox_SendText);
             this.Controls.Add(this.RichTextBox_Client);
             this.Controls.Add(this.Button_Connect);
             this.Controls.Add(this.PictureBox_Connect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form2";
+            this.Name = "Client";
             this.Text = "Form1";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_Connect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Button_Close)).EndInit();
+            this.nickNamePanel.ResumeLayout(false);
+            this.nickNamePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,6 +196,10 @@ namespace Tcp_Client
         private System.Windows.Forms.RichTextBox RichTextBox_Client;
         private System.Windows.Forms.TextBox TextBox_SendText;
         private System.Windows.Forms.PictureBox Button_Close;
+        private System.Windows.Forms.TableLayoutPanel nickNamePanel;
+        private System.Windows.Forms.Label inputLabel;
+        private System.Windows.Forms.TextBox nickNameBox;
+        private System.Windows.Forms.Button nickNameSet;
     }
 }
 

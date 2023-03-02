@@ -25,6 +25,22 @@ namespace Tcp_Server
         private byte[] stringByte;
 
         private const string closeMsg = "/CloseServer";
+        private const string nickNameSignal = "/NickName";
+
+        private string nickName = string.Empty;
+        public string NickName
+        {
+            get { return nickName; }
+            set
+            {
+                if (nickName != value)
+                    if (!string.IsNullOrEmpty(nickName))
+                    {
+                        controlForm.NickNameChanged(nickName, value, myNumber);
+                    }
+                nickName = value;
+            }
+        }
 
         public ConnectedClient(Server server, TcpClient connClient, int clientNo)
         {
@@ -49,15 +65,21 @@ namespace Tcp_Server
                     nbytes = stream.Read(buff, 0, buff.Length);
                     message = Encoding.UTF8.GetString(buff, 0, nbytes);
 
-                    switch (message)
+                    if (message.StartsWith(nickNameSignal))
                     {
-                        case closeMsg:
-                            CloseConnection();
-                            break;
-                        default:
-                            controlForm.MessageReceived(myNumber, message);
-                            break;
+                        message = message.Substring(nickNameSignal.Length, message.Length - nickNameSignal.Length);
+                        NickName = message.Trim();
                     }
+                    else
+                        switch (message)
+                        {
+                            case closeMsg:
+                                CloseConnection();
+                                break;
+                            default:
+                                controlForm.MessageReceived(myNumber, message);
+                                break;
+                        }
                 }
                 catch { }
             }
