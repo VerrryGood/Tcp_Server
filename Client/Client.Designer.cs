@@ -150,6 +150,7 @@ namespace Tcp_Client
             this.nickNameBox.Name = "nickNameBox";
             this.nickNameBox.Size = new System.Drawing.Size(174, 29);
             this.nickNameBox.TabIndex = 1;
+            this.nickNameBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.nickNameBox_PreviewKeyDown);
             // 
             // nickNameSet
             // 

@@ -383,5 +383,13 @@ namespace Tcp_Client
 
             return true;
         }
+
+        private void nickNameBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                nickNameSet.PerformClick();
+            }
+        }
     }
 }
